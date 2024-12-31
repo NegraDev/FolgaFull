@@ -1,0 +1,159 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #333333;
+}
+
+.calendar{
+    background: #111111; 
+    border-radius: 10px;
+    padding: 20px;
+    width: 90%;
+    max-width: 350px;
+    color: aquamarine;
+    overflow: hidden;
+    box-shadow: 0 0 30px;
+
+}
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0px;
+}
+
+.btn{
+    background: none;
+    border: none;
+    color: aquamarine;
+    font-size: 20px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+#month-year{
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.weekdays, .days{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.days{
+    height: 240px;
+}
+
+.weekdays div, .days div{
+    width: 14.28%;
+    text-align: center;
+    padding: 10px 0;
+    border-radius: 5px;
+   
+}
+
+.days div{
+    cursor: pointer;
+    transition: background-color 0.3s ;
+}
+
+.days div:hover{
+    background-color: aliceblue;
+    color: aquamarine;
+   
+}
+
+.days div.today{
+    background-color: #81f0de;
+    color: #fff;
+}
+
+.days div.inactive {
+    color: #555;
+    background-color: #222;
+    cursor: default;
+}
+
+.days div.inactive:hover {
+    background-color: unset;
+    color: #555;
+}
+
+/* Modal */
+.modal {
+    display: none; /* Escondido por padrão */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #111111;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 400px;
+    color: aquamarine;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+    text-align: center;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 24px;
+    color: aquamarine;
+    cursor: pointer;
+}
+
+form input, form textarea, form button {
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+form input, form textarea {
+    background-color: #222;
+    color: aquamarine;
+}
+
+form button {
+    background-color: aquamarine;
+    color: #111;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+form button:hover {
+    background-color: #81f0de;
+}
+
+.days div.user1 {
+    background-color: rgba(249, 246, 37, 0.5);
+}
+
+.days div.user2 {
+    background-color: rgba(203, 40, 248, 0.5);
+}
+
