@@ -1,18 +1,31 @@
-// Inicializando o Firebase
+import { initializeApp } from "firebase/app";
+import { getDatabase, ref, push, onValue } from "firebase/database";
+
+// Configuração do Firebase
 const firebaseConfig = {
-    // Adicione sua configuração do Firebase aqui
+    apiKey: "AIzaSyBK42Ho4Dw9_fZ0k9IZVFQb-ShOvRqpoNk",
+    authDomain: "folgasfull-748ef.firebaseapp.com",
+    databaseURL: "https://folgasfull-748ef-default-rtdb.firebaseio.com",
+    projectId: "folgasfull-748ef",
+    storageBucket: "folgasfull-748ef.appspot.com",
+    messagingSenderId: "289177219327",
+    appId: "1:289177219327:web:227c5c4856f570aa7cdcca"
 };
-const app = firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+
+// Inicializando o Firebase
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
 
 // Função para salvar lembrete no Firebase
 function saveReminder(date, user, text) {
-    db.ref(`reminders/${date}`).push({ user, text });
+    const remindersRef = ref(db, `reminders/${date}`);
+    push(remindersRef, { user, text });
 }
 
 // Função para carregar lembretes do Firebase
 function loadReminders(date, callback) {
-    db.ref(`reminders/${date}`).on('value', (snapshot) => {
+    const remindersRef = ref(db, `reminders/${date}`);
+    onValue(remindersRef, (snapshot) => {
         callback(snapshot.val());
     });
 }
@@ -39,7 +52,6 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentDate = new Date();
 
     function renderCalendar(date) {
-        console.log('Renderizando calendário para:', date);
         const year = date.getFullYear();
         const month = date.getMonth();
         const today = new Date();
@@ -49,14 +61,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const lastDay = new Date(year, month + 1, 0).getDate();
         const firstDayIndex = new Date(year, month, 1).getDay();
-        const prevLastDay = new Date(year, month, 0).getDate();
 
         // Dias do mês anterior
-        for (let i = firstDayIndex - 1; i >= 0; i--) {
+        for (let i = 0; i < firstDayIndex; i++) {
             const dayDiv = document.createElement('div');
-            dayDiv.textContent = prevLastDay - i;
+            dayDiv.textContent = new Date(year, month, -i).getDate();
             dayDiv.classList.add('inactive');
-            daysContainer.appendChild(dayDiv);
+            daysContainer.prepend(dayDiv); // Adiciona ao início
         }
 
         // Dias do mês atual
@@ -96,9 +107,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // Dias do próximo mês
-        const totalDays = daysContainer.children.length;
-        const nextDays = 42 - totalDays;
-        for (let i = 1; i <= nextDays; i++) {
+        const remainingDays = 42 - daysContainer.children.length;
+        for (let i = 1; i <= remainingDays; i++) {
             const dayDiv = document.createElement('div');
             dayDiv.textContent = i;
             dayDiv.classList.add('inactive');
