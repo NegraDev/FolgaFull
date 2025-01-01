@@ -1,16 +1,7 @@
-import { initializeApp } from "firebase/app";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyBhW8Tr2uCUSgaiqHbY2hAteJO3wX8-GjA",
-  authDomain: "calendario-177fb.firebaseapp.com",
-  databaseURL: "https://calendario-177fb-default-rtdb.firebaseio.com",
-  projectId: "calendario-177fb",
-  storageBucket: "calendario-177fb.firebasestorage.app",
-  messagingSenderId: "828793511801",
-  appId: "1:828793511801:web:f7a0bfa31812438a5c59a8"
-};
-
 // Inicializando o Firebase
+const firebaseConfig = {
+    // Adicione sua configuração do Firebase aqui
+};
 const app = firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
@@ -58,8 +49,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const lastDay = new Date(year, month + 1, 0).getDate();
         const firstDayIndex = new Date(year, month, 1).getDay();
-
         const prevLastDay = new Date(year, month, 0).getDate();
+
+        // Dias do mês anterior
         for (let i = firstDayIndex - 1; i >= 0; i--) {
             const dayDiv = document.createElement('div');
             dayDiv.textContent = prevLastDay - i;
@@ -67,6 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
             daysContainer.appendChild(dayDiv);
         }
 
+        // Dias do mês atual
         for (let i = 1; i <= lastDay; i++) {
             const dayDiv = document.createElement('div');
             dayDiv.textContent = i;
@@ -81,6 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 dayDiv.classList.add('today');
             }
 
+            // Carregar lembretes para o dia
             loadReminders(fullDate, (reminders) => {
                 if (reminders) {
                     Object.values(reminders).forEach(reminder => {
@@ -101,6 +95,7 @@ document.addEventListener('DOMContentLoaded', function () {
             daysContainer.appendChild(dayDiv);
         }
 
+        // Dias do próximo mês
         const totalDays = daysContainer.children.length;
         const nextDays = 42 - totalDays;
         for (let i = 1; i <= nextDays; i++) {
@@ -137,4 +132,3 @@ document.addEventListener('DOMContentLoaded', function () {
         renderCalendar(currentDate);
     });
 });
-
