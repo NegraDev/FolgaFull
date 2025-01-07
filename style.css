@@ -1,11 +1,11 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
 }
 
-body{
+body {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -13,8 +13,8 @@ body{
     background: #333333;
 }
 
-.calendar{
-    background: #111111; 
+.calendar {
+    background: #111111;
     border-radius: 10px;
     padding: 20px;
     width: 90%;
@@ -22,16 +22,16 @@ body{
     color: aquamarine;
     overflow: hidden;
     box-shadow: 0 0 30px;
-
 }
-.header{
+
+.header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin: 10px 0px;
 }
 
-.btn{
+.btn {
     background: none;
     border: none;
     color: aquamarine;
@@ -40,59 +40,84 @@ body{
     transition: color 0.3s;
 }
 
-#month-year{
+#month-year {
     font-weight: bold;
     font-size: 20px;
 }
 
-.weekdays, .days{
+.weekdays, .days {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: flex-start; /* Garante que os dias fiquem alinhados à esquerda */
 }
 
-.days{
+.weekdays {
+    margin-bottom: 10px;
+}
+
+.weekdays div {
+    width: calc(100% / 7); /* Define 7 colunas */
+    text-align: center;
+    padding: 10px 0;
+    font-weight: bold;
+    color: #ccc;
+}
+
+.days {
     height: 240px;
 }
 
-.weekdays div, .days div{
-    width: 14.28%;
+.days div {
+    width: calc(100% / 7); /* Define 7 colunas */
     text-align: center;
     padding: 10px 0;
     border-radius: 5px;
-   
-}
-
-.days div{
     cursor: pointer;
-    transition: background-color 0.3s ;
+    transition: background-color 0.3s;
 }
 
-.days div:hover{
+.days div.empty {
+    background-color: #333333; /* Cor de fundo para os dias vazios */
+}
+
+.days div.prev-month {
+    background-color: #444444; /* Cor de fundo para os dias do mês anterior */
+    color: #777; /* Texto mais suave */
+    opacity: 0.6; /* Deixa os dias do mês anterior mais suaves */
+    cursor: default; /* Não permite interatividade nos dias do mês anterior */
+}
+
+.days div.prev-month:hover {
+    background-color: #444444;
+    opacity: 0.8; /* Aumenta a opacidade ao passar o mouse */
+}
+
+
+.days div.empty {
+    background-color: #333333; /* Cor de fundo para os dias vazios */
+}
+
+.days div:hover {
     background-color: aliceblue;
     color: aquamarine;
-   
 }
 
-.days div.today{
+.days div.today {
     background-color: #81f0de;
     color: #fff;
 }
 
-.days div.inactive {
-    color: #555;
-    background-color: #222;
-    cursor: default;
+.days div.user1 {
+    background-color: rgba(255, 255, 0);
 }
 
-.days div.inactive:hover {
-    background-color: unset;
-    color: #555;
+.days div.user2 {
+    background-color: rgba(203, 40, 248, 0.5);
 }
 
 /* Modal */
 .modal {
-    display: none; /* Escondido por padrão */
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
@@ -123,37 +148,3 @@ body{
     color: aquamarine;
     cursor: pointer;
 }
-
-form input, form textarea, form button {
-    width: 100%;
-    margin: 10px 0;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-}
-
-form input, form textarea {
-    background-color: #222;
-    color: aquamarine;
-}
-
-form button {
-    background-color: aquamarine;
-    color: #111;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-form button:hover {
-    background-color: #81f0de;
-}
-
-.days div.user1 {
-    background-color: rgba(249, 246, 37, 0.5);
-}
-
-.days div.user2 {
-    background-color: rgba(203, 40, 248, 0.5);
-}
-

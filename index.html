@@ -3,54 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Calendário interativo com lembretes compartilhados">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" 
-          integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" 
-          crossorigin="anonymous" 
-          referrerpolicy="no-referrer">
     <title>Calendário Interativo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css"> 
 </head>
 <body>
-    <div class="calendar">
-        <div class="header">
-            <button id="prev" class="btn" aria-label="Mês anterior">
-                <i class="fa-solid fa-circle-left"></i>
-            </button>
-            <div id="month-year" aria-live="polite"></div>
-            <button id="next" class="btn" aria-label="Próximo mês">
-                <i class="fa-solid fa-circle-right"></i>
-            </button>
-        </div>
-        <div class="weekdays">
-            <div>Dom</div>
-            <div>Seg</div>
-            <div>Ter</div>
-            <div>Qua</div>
-            <div>Qui</div>
-            <div>Sex</div>
-            <div>Sab</div>
-        </div>
-        <div class="days" id="days"></div>
+
+<div class="calendar">
+    <div class="header">
+        <button class="btn" onclick="changeMonth(-1)">&#8592;</button>
+        <span id="month-year"></span>
+        <button class="btn" onclick="changeMonth(1)">&#8594;</button>
     </div>
-    <div class="modal" id="reminder-modal">
-        <div class="modal-content">
-            <span class="close-btn" id="close-modal">&times;</span>
-            <h2>Adicionar Lembrete</h2>
-            <form id="reminder-form">
-                <select id="reminder-user" required>
-                    <option value="user1">Usuário 1</option>
-                    <option value="user2">Usuário 2</option>
-                </select>
-                <input type="date" id="reminder-date" required>
-                <textarea id="reminder-text" placeholder="Digite seu lembrete..." required></textarea>
-                <button type="submit">Salvar Lembrete</button>
-            </form>
-        </div>
+    <div class="weekdays">
+        <div>Dom</div>
+        <div>Seg</div>
+        <div>Ter</div>
+        <div>Qua</div>
+        <div>Qui</div>
+        <div>Sex</div>
+        <div>Sáb</div>
     </div>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
-    <script type="module" src="script.js"></script>
+    <div class="days" id="calendar-days">
+        <!-- Os dias serão gerados aqui -->
+    </div>
+</div>
+
+<div id="reminder-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <h3>Adicionar Lembrete</h3>
+        <label for="reminder-date">Data:</label>
+        <input type="text" id="reminder-date" readonly />
+        <label for="reminder-user">Usuário:</label>
+        <select id="reminder-user">
+            <option value="user1">Celle</option>
+            <option value="user2">Tati</option>
+        </select>
+        <label for="reminder-text">Lembrete:</label>
+        <textarea id="reminder-text"></textarea>
+        <button onclick="saveReminder()">Salvar Lembrete</button>
+    </div>
+</div>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+<script src="script.js"></script>
 
 </body>
 </html>
