@@ -10,19 +10,13 @@ const firebaseConfig = {
 
 // Inicializa Firebase
 firebase.initializeApp(firebaseConfig);
-
-// Inicializa Firestore
 const db = firebase.firestore();
 
-// Variáveis para o calendário
 const currentDate = new Date();
 let currentMonth = currentDate.getMonth();
 let currentYear = currentDate.getFullYear();
-
-// Objeto para armazenar os lembretes
 let reminders = {};
 
-// Função para gerar o calendário
 function generateCalendar(month, year) {
     const monthNames = [
         "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", 
@@ -35,9 +29,8 @@ function generateCalendar(month, year) {
 
     document.getElementById("month-year").textContent = `${monthNames[month]} ${year}`;
     const calendarDays = document.getElementById("calendar-days");
-    calendarDays.innerHTML = '';  // Limpa os dias anteriores
+    calendarDays.innerHTML = '';
 
-    // Preenche os dias anteriores do mês
     let prevMonthDay = new Date(year, month, 0).getDate() - firstDayOfMonth + 1;
     for (let i = 0; i < firstDayOfMonth; i++) {
         const prevMonthDayElement = document.createElement("div");
@@ -46,30 +39,39 @@ function generateCalendar(month, year) {
         calendarDays.appendChild(prevMonthDayElement);
     }
 
-    // Adiciona os dias do mês atual
     for (let day = 1; day <= daysInMonth; day++) {
         const dayElement = document.createElement("div");
-        dayElement.textContent = day;
+        const reminderKey = `${year}-${month + 1}-${day}`;
+        
+        // Create day container with number and reminder preview
+        dayElement.innerHTML = `
+            <span class="day-number">${day}</span>
+            <div class="reminder-preview"></div>
+        `;
 
-        // Verifica se é o dia de hoje
         if (today.getDate() === day && today.getMonth() === month && today.getFullYear() === year) {
             dayElement.classList.add("today");
         }
 
-        // Verifica se há lembretes para o dia
-        const reminderKey = `${year}-${month + 1}-${day}`; 
+        // Add reminder indicators if exists
         if (reminders[reminderKey]) {
-            dayElement.classList.add("has-reminder");
+            const reminder = reminders[reminderKey];
+            dayElement.classList.add("has-reminder", `user-${reminder.user}`);
+            
+            // Add reminder preview
+            const previewEl = dayElement.querySelector('.reminder-preview');
+            previewEl.textContent = reminder.text.substring(0, 15) + (reminder.text.length > 15 ? '...' : '');
+            
+            // Add tooltip with full reminder
+            dayElement.title = `${reminder.user === 'user1' ? 'Celle' : 'Tati'}: ${reminder.text}`;
         }
 
         dayElement.classList.add("active");
         dayElement.onclick = () => openModal(day, month, year);
-
         calendarDays.appendChild(dayElement);
     }
 }
 
-// Função para mudar o mês
 function changeMonth(direction) {
     currentMonth += direction;
     if (currentMonth > 11) {
@@ -82,47 +84,50 @@ function changeMonth(direction) {
     generateCalendar(currentMonth, currentYear);
 }
 
-// Função para abrir o modal
 function openModal(day, month, year) {
     const reminderDate = `${year}-${month + 1}-${day}`;
+    const reminder = reminders[reminderDate];
+    
     document.getElementById("reminder-date").value = reminderDate;
-    document.getElementById("reminder-text").value = '';
+    document.getElementById("reminder-user").value = reminder ? reminder.user : 'user1';
+    document.getElementById("reminder-text").value = reminder ? reminder.text : '';
     document.getElementById("reminder-modal").style.display = "flex";
 }
 
-// Função para fechar o modal
 function closeModal() {
     document.getElementById("reminder-modal").style.display = "none";
 }
 
-// Função para salvar o lembrete
 function saveReminder() {
     const reminderDate = document.getElementById("reminder-date").value;
     const user = document.getElementById("reminder-user").value;
     const reminderText = document.getElementById("reminder-text").value;
 
-    // Salva o lembrete no Firestore
+    if (!reminderText.trim()) {
+        alert('Por favor, digite um lembrete');
+        return;
+    }
+
     const reminderRef = db.collection("reminders").doc(reminderDate);
     reminderRef.set({
         user: user,
-        text: reminderText
+        text: reminderText,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
     }).then(() => {
         closeModal();
         loadReminders();
     }).catch((error) => {
         console.error("Erro ao salvar lembrete: ", error);
+        alert('Erro ao salvar o lembrete. Tente novamente.');
     });
 }
 
-// Função para carregar os lembretes do Firestore
 function loadReminders() {
     const remindersRef = db.collection("reminders");
     remindersRef.get().then((querySnapshot) => {
         reminders = {};
         querySnapshot.forEach((doc) => {
-            const reminderDate = doc.id;
-            const reminderData = doc.data();
-            reminders[reminderDate] = reminderData.text;
+            reminders[doc.id] = doc.data();
         });
         generateCalendar(currentMonth, currentYear);
     }).catch((error) => {
@@ -130,5 +135,4 @@ function loadReminders() {
     });
 }
 
-// Inicializa o calendário e carrega os lembretes
 loadReminders();

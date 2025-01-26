@@ -18,10 +18,10 @@ body {
     border-radius: 10px;
     padding: 20px;
     width: 90%;
-    max-width: 350px;
+    max-width: 400px;
     color: aquamarine;
     overflow: hidden;
-    box-shadow: 0 0 30px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
 }
 
 .header {
@@ -40,6 +40,10 @@ body {
     transition: color 0.3s;
 }
 
+.btn:hover {
+    color: #fff;
+}
+
 #month-year {
     font-weight: bold;
     font-size: 20px;
@@ -48,7 +52,7 @@ body {
 .weekdays, .days {
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start; /* Garante que os dias fiquem alinhados à esquerda */
+    justify-content: flex-start;
 }
 
 .weekdays {
@@ -56,7 +60,7 @@ body {
 }
 
 .weekdays div {
-    width: calc(100% / 7); /* Define 7 colunas */
+    width: calc(100% / 7);
     text-align: center;
     padding: 10px 0;
     font-weight: bold;
@@ -64,58 +68,68 @@ body {
 }
 
 .days {
-    height: 240px;
+    height: auto;
+    min-height: 240px;
 }
 
 .days div {
-    width: calc(100% / 7); /* Define 7 colunas */
-    text-align: center;
-    padding: 10px 0;
+    width: calc(100% / 7);
+    height: 60px;
+    padding: 5px;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: all 0.3s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.days div.empty {
-    background-color: #333333; /* Cor de fundo para os dias vazios */
+.day-number {
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+
+.reminder-preview {
+    font-size: 10px;
+    color: #ccc;
+    text-align: center;
+    overflow: hidden;
+    max-height: 28px;
+    width: 100%;
 }
 
 .days div.prev-month {
-    background-color: #444444; /* Cor de fundo para os dias do mês anterior */
-    color: #777; /* Texto mais suave */
-    opacity: 0.6; /* Deixa os dias do mês anterior mais suaves */
-    cursor: default; /* Não permite interatividade nos dias do mês anterior */
+    background-color: #222;
+    color: #666;
+    cursor: default;
 }
 
-.days div.prev-month:hover {
-    background-color: #444444;
-    opacity: 0.8; /* Aumenta a opacidade ao passar o mouse */
-}
-
-
-.days div.empty {
-    background-color: #333333; /* Cor de fundo para os dias vazios */
-}
-
-.days div:hover {
-    background-color: aliceblue;
-    color: aquamarine;
+.days div:not(.prev-month):hover {
+    background-color: #2a2a2a;
+    transform: translateY(-2px);
 }
 
 .days div.today {
-    background-color: #81f0de;
-    color: #fff;
+    background-color: rgba(127, 255, 212, 0.1);
+    border: 1px solid aquamarine;
 }
 
-.days div.user1 {
-    background-color: rgba(255, 255, 0);
+.days div.has-reminder {
+    border: 2px solid transparent;
 }
 
-.days div.user2 {
-    background-color: rgba(203, 40, 248, 0.5);
+.days div.user-user1 {
+    border-color: rgba(255, 255, 0, 0.7);
+    background-color: rgba(255, 255, 0, 0.1);
 }
 
-/* Modal */
+.days div.user-user2 {
+    border-color: rgba(203, 40, 248, 0.7);
+    background-color: rgba(203, 40, 248, 0.1);
+}
+
+/* Modal Styles */
 .modal {
     display: none;
     position: fixed;
@@ -123,7 +137,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.7);
     justify-content: center;
     align-items: center;
     z-index: 1000;
@@ -131,20 +145,70 @@ body {
 
 .modal-content {
     background-color: #111111;
-    padding: 20px;
+    padding: 30px;
     border-radius: 10px;
     width: 90%;
     max-width: 400px;
     color: aquamarine;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
-    text-align: center;
+    position: relative;
 }
 
 .close-btn {
     position: absolute;
     top: 10px;
-    right: 20px;
+    right: 15px;
     font-size: 24px;
     color: aquamarine;
     cursor: pointer;
+    transition: color 0.3s;
+}
+
+.close-btn:hover {
+    color: #fff;
+}
+
+.modal-content h3 {
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.modal-content label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    color: #ccc;
+}
+
+.modal-content input,
+.modal-content select,
+.modal-content textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    background: #222;
+    border: 1px solid #444;
+    border-radius: 4px;
+    color: #fff;
+}
+
+.modal-content textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+.modal-content button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: aquamarine;
+    color: #111;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.modal-content button:hover {
+    background-color: #66cfb8;
+    transform: translateY(-2px);
 }
