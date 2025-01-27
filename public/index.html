@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendário Interativo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+
+<div class="calendar">
+    <div class="header">
+        <button class="btn" onclick="changeMonth(-1)">&#8592;</button>
+        <span id="month-year"></span>
+        <button class="btn" onclick="changeMonth(1)">&#8594;</button>
+    </div>
+    <div class="weekdays">
+        <div>Dom</div>
+        <div>Seg</div>
+        <div>Ter</div>
+        <div>Qua</div>
+        <div>Qui</div>
+        <div>Sex</div>
+        <div>Sáb</div>
+    </div>
+    <div class="days" id="calendar-days">
+        <!-- Os dias serão gerados aqui -->
+    </div>
+</div>
+
+<div id="reminder-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <h3>Adicionar Lembrete</h3>
+        <label for="reminder-date">Data:</label>
+        <input type="text" id="reminder-date" readonly />
+        <label for="reminder-user">Usuário:</label>
+        <select id="reminder-user">
+            <option value="user1">Celle</option>
+            <option value="user2">Tati</option>
+        </select>
+        <label for="reminder-text">Lembrete:</label>
+        <textarea id="reminder-text"></textarea>
+        <button onclick="saveReminder()">Salvar Lembrete</button>
+    </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
